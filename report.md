@@ -82,8 +82,18 @@ LR_CRITIC = 1e-3        # learning rate of the critic
 WEIGHT_DECAY = 0.000    # L2 weight decay
 ```
 
-
 ## Results
 
+The model has performed very well, reaching the score of 30 by 30th Episode and reaching the average score of 30 over the
+past 100 episodes by the 101 episode.
+
+![performance](results.png)
+
+
 ## Future work
+
+Distributed Learning with D4PG.
+
+Form the future work I will take the advantage of the DDistributed training environment and will use the D4PG
+agent, which improves convergence, stability and sample efficiency.
 
