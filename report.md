@@ -1,6 +1,7 @@
 # Udacity Deep Reinforcement Learning - Continuous Control Project.
 
 ## Environment
+
 In this environment, a double-jointed arm can move to target locations. A reward of +0.1 is provided for each step that 
 the agent's hand is in the goal location. Thus, the goal of your agent is to maintain its position at the target location 
 for as many time steps as possible.
@@ -15,7 +16,7 @@ The agent used for this project is a modified version of the [BipedalWalker](htt
 tutorial provided by the Udacity in their Deep RL nano-degree, which makes use of [DDPG](https://arxiv.org/abs/1509.02971) agent.
 
 Deterministic Policy Gradients is an Actor-Critic method that that has a nice property of being off-policy. DDPG belongs
-to the A2C family, but with thge deterministic policy which means that it directly provides us with the action to take from
+to the A2C family, but with the deterministic policy which means that it directly provides us with the action to take from
 the state. This means that we can directly improving the policy by maximsing the Q-Value.
 
 DDPG is considered to be an an Actor-Critic method.
@@ -34,7 +35,52 @@ course instructors.
 
 ## Model Architecture
 
+The model consists of thetow separate neural netowrks for actor and the critic and it follows the architecture from 
+[Continuous control with deep reinforcement learning](https://arxiv.org/abs/1509.02971) paper, with te addition of a single
+Batch Normalisation layer for both the Actor and the Critic, which proved to help with the training speed and stability.
+
 ### Actor Model
+
+The actor model is a simple feed forward neural network with 3 fully connected (FC) layers followed by a ReLU activation function.
+Th first layer is also followed by the batch normalisation layer. The final FC layer has an output dimension corresponding
+to thje action size, which is transformed by the TanH activation function in order to scale the output from -1 to 1.
+
+The model Layers are as following:
+```
+input layer:  in 33  out 400
+batch norm: 400
+ReLU
+hidden layer: in 400  out 300
+ReLU
+output layer: in 300 out 4
+TanH
+```
+
+### Critic Model
+
+The Critic model is also a feed forward neural network with 3 fully connected (FC) layers, however it is a bit unusual because
+it has two separate paths for the state observations and the actions from the Actor model which are concatenated with
+the states in the second layer.
+```
+input layer:  in 33  out 400
+batch norm: 400
+ReLU
+hidden layer: in 400 + 4  out 300
+ReLU
+output layer: in 300 out 1
+```
+
+### Hyper Parameters
+
+```
+BUFFER_SIZE = int(1e6)  # replay buffer size
+BATCH_SIZE = 1024       # minibatch size
+GAMMA = 0.99            # discount factor
+TAU = 1e-3              # for soft update of target parameters
+LR_ACTOR = 1e-3         # learning rate of the actor 
+LR_CRITIC = 1e-3        # learning rate of the critic
+WEIGHT_DECAY = 0.000    # L2 weight decay
+```
 
 
 ## Results
